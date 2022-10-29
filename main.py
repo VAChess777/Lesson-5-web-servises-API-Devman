@@ -120,6 +120,7 @@ def get_sj_statistic(total_data_vacansy_sj):
         amount_vacancies = len(total_data_vacansy_sj)
         middle_salaries = [
             predict_rub_salary_sj(vacancy) for vacancy in total_data_vacansy_sj
+            if predict_rub_salary_sj != 0
         ]
         vacancies_processed = len(middle_salaries)
         average_salary = int(sum(middle_salaries)/amount_vacancies)
