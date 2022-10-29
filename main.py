@@ -21,7 +21,7 @@ languages = [
     'Python',
     '1C',
 ]  # 14
-
+sas
 total_data_vacansy = []
 # language = 'Программист Python'
 for language in languages:
