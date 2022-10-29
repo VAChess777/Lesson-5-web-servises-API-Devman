@@ -140,7 +140,7 @@ def get_all_language_stat_from_sj(languages):
     return statistic_sj
 
 
-def make_table(site_name, statistic):
+def get_table(site_name, statistic):
     title = '{} Moscow----------'.format(site_name)
     if statistic:
         table_data = [[
@@ -178,9 +178,9 @@ def main():
         '1C',
     ]
     site_name = 'HH'
-    print(make_table(site_name, get_all_language_stat_from_hh(languages)))
+    print(get_table(site_name, get_all_language_stat_from_hh(languages)))
     site_name = 'SJ'
-    print(make_table(site_name, get_all_language_stat_from_sj(languages)))
+    print(get_table(site_name, get_all_language_stat_from_sj(languages)))
 
 
 if __name__ == "__main__":
