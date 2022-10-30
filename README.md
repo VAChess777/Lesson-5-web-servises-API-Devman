@@ -30,10 +30,10 @@ For the work of the program `main.py`, you will need an `API token` from the res
 by the link [https://api.superjob.ru](https://api.superjob.ru). 
 
 When you receive the token, put its value in the `.env` file.
-For example: 'SUPER_JOB_KEY'='v3.r.13856390.5f5d656a28ce...........'.
+For example: `SUPER_JOB_KEY=v3.r.13856390.5f5d656a28ce...........`.
 
 Then put this value in an environment variable in the program.
-For example: nasa_api_key_epic = os.environ['SUPER_JOB_KEY'].
+For example: `nasa_api_key_epic = os.environ['SUPER_JOB_KEY']`.
 
 To use all of the above environment variables in programs, use the `load_dotenv()` module.
 
