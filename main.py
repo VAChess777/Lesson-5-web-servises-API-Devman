@@ -40,39 +40,38 @@ def predict_salary(salary_from, salary_to):
 
 
 def predict_rub_salary_hh(vacancy):
-    rub_salary_for_hh = 0
-    if vacancy['salary'] and vacancy['salary']['currency'] == 'RUR':
-        if vacancy['salary']['currency'] != 'RUR':
-            return
-        salary_from = vacancy['salary']['from']
-        salary_to = vacancy['salary']['to']
-        rub_salary_for_hh = predict_salary(salary_from, salary_to)
+    if vacancy['salary']['currency'] != 'RUR':
+        return
+    salary_from = vacancy['salary']['from']
+    salary_to = vacancy['salary']['to']
+    rub_salary_for_hh = predict_salary(salary_from, salary_to)
     return rub_salary_for_hh
 
 
 def get_hh_statistic(vacancies_hh):
-    if vacancies_hh:
-        amount_vacancies = len(vacancies_hh)
-        middle_salaries = []
-        for vacancy in vacancies_hh:
+    amount_vacancies = len(vacancies_hh)
+    middle_salaries = []
+    for vacancy in vacancies_hh:
+        if vacancy['salary']:
             salary_for_hh = predict_rub_salary_hh(vacancy)
             if salary_for_hh:
                 middle_salaries.append(salary_for_hh)
-        vacancies_processed = len(middle_salaries)
-        average_salary = int(sum(middle_salaries) / vacancies_processed)
-        hh_statistics = {
-            'vacancies_found': amount_vacancies,
-            'vacancies_processed': vacancies_processed,
-            'average_salary': average_salary
-        }
-        return hh_statistics
+    vacancies_processed = len(middle_salaries)
+    average_salary = int(sum(middle_salaries) / vacancies_processed)
+    hh_statistics = {
+        'vacancies_found': amount_vacancies,
+        'vacancies_processed': vacancies_processed,
+        'average_salary': average_salary
+    }
+    return hh_statistics
 
 
 def get_all_language_stat_from_hh(languages):
     statistic_hh = {}
     for language in languages:
         vacancies_hh = get_vacancies_hh(language)
-        statistic_hh[language] = get_hh_statistic(vacancies_hh)
+        if vacancies_hh:
+            statistic_hh[language] = get_hh_statistic(vacancies_hh)
     return statistic_hh
 
 
@@ -105,59 +104,56 @@ def get_vacancies_sj(language, secret_key):
 
 
 def predict_rub_salary_sj(vacancy):
-    rub_salary_for_sj = 0
+    if vacancy['currency'] != 'rub':
+        return
     salary_from = vacancy['payment_from']
     salary_to = vacancy['payment_to']
-    if vacancy['currency'] == 'rub':
-        if vacancy['currency'] != 'rub':
-            return
-        rub_salary_for_sj = predict_salary(salary_from, salary_to)
+    rub_salary_for_sj = predict_salary(salary_from, salary_to)
     return rub_salary_for_sj
 
 
 def get_sj_statistic(vacancies_sj):
-    if vacancies_sj:
-        amount_vacancies = len(vacancies_sj)
-        middle_salaries = []
-        for vacancy in vacancies_sj:
-            salary_for_sj = predict_rub_salary_sj(vacancy)
-            if salary_for_sj:
-                middle_salaries.append(salary_for_sj)
-        vacancies_processed = len(middle_salaries)
-        average_salary = int(sum(middle_salaries)/amount_vacancies)
-        sj_statistics = {
-            'vacancies_found': amount_vacancies,
-            'vacancies_processed': vacancies_processed,
-            'average_salary': average_salary
-        }
-        return sj_statistics
+    amount_vacancies = len(vacancies_sj)
+    middle_salaries = []
+    for vacancy in vacancies_sj:
+        salary_for_sj = predict_rub_salary_sj(vacancy)
+        if salary_for_sj:
+            middle_salaries.append(salary_for_sj)
+    vacancies_processed = len(middle_salaries)
+    average_salary = int(sum(middle_salaries)/amount_vacancies)
+    sj_statistics = {
+        'vacancies_found': amount_vacancies,
+        'vacancies_processed': vacancies_processed,
+        'average_salary': average_salary
+    }
+    return sj_statistics
 
 
 def get_all_language_stat_from_sj(languages, secret_key):
     statistic_sj = {}
     for language in languages:
         vacancies_sj = get_vacancies_sj(language, secret_key)
-        statistic_sj[language] = get_sj_statistic(vacancies_sj)
+        if vacancies_sj:
+            statistic_sj[language] = get_sj_statistic(vacancies_sj)
     return statistic_sj
 
 
 def get_table(site_name, statistic):
     title = '{} Moscow----------'.format(site_name)
-    if statistic:
-        table_title = [[
-            'Programming language',
-            'Vacancies found',
-            'Vacancies processed',
-            'Average salary'
-        ]]
-        table_instance = AsciiTable(table_title, title)
-        for language, language_stat in statistic.items():
-            if language_stat:
-                row = [language]
-                for key, value in language_stat.items():
-                    row.append(value)
-                table_title.append(row)
-        return table_instance.table
+    table_title = [[
+        'Programming language',
+        'Vacancies found',
+        'Vacancies processed',
+        'Average salary'
+    ]]
+    table_instance = AsciiTable(table_title, title)
+    for language, language_stat in statistic.items():
+        if language_stat:
+            row = [language]
+            for key, value in language_stat.items():
+                row.append(value)
+            table_title.append(row)
+    return table_instance.table
 
 
 def main():
