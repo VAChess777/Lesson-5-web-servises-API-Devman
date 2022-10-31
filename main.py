@@ -16,7 +16,6 @@ def get_vacancies_hh(language):
             'area': 1,  # City code, 1 - Moscow.
             'per_page': 100,  # Number of vacancies per page.
             'page': page,  # Current search page.
-            'only_with_salary': True  # Vacancies only with a fork salary
         }
         response = requests.get(
             url,
@@ -54,10 +53,11 @@ def predict_rub_salary_hh(vacancy):
 def get_hh_statistic(vacancies_hh):
     if vacancies_hh:
         amount_vacancies = len(vacancies_hh)
-        middle_salaries = [
-            predict_rub_salary_hh(vacancy)
-            for vacancy in vacancies_hh if vacancy['salary']['currency'] == 'RUR'
-        ]
+        middle_salaries = []
+        for vacancy in vacancies_hh:
+            salary_for_hh = predict_rub_salary_hh(vacancy)
+            if salary_for_hh:
+                middle_salaries.append(salary_for_hh)
         vacancies_processed = len(middle_salaries)
         average_salary = int(sum(middle_salaries) / vacancies_processed)
         hh_statistics = {
@@ -105,23 +105,24 @@ def get_vacancies_sj(language, secret_key):
 
 
 def predict_rub_salary_sj(vacancy):
-    sj_predict_salary = 0
+    rub_salary_for_sj = 0
     salary_from = vacancy['payment_from']
     salary_to = vacancy['payment_to']
     if vacancy['currency'] == 'rub':
         if vacancy['currency'] != 'rub':
             return
-        sj_predict_salary = predict_salary(salary_from, salary_to)
-    return sj_predict_salary
+        rub_salary_for_sj = predict_salary(salary_from, salary_to)
+    return rub_salary_for_sj
 
 
 def get_sj_statistic(vacancies_sj):
     if vacancies_sj:
         amount_vacancies = len(vacancies_sj)
-        middle_salaries = [
-            predict_rub_salary_sj(vacancy)
-            for vacancy in vacancies_sj if vacancy['currency'] == 'rub'
-        ]
+        middle_salaries = []
+        for vacancy in vacancies_sj:
+            salary_for_sj = predict_rub_salary_sj(vacancy)
+            if salary_for_sj:
+                middle_salaries.append(salary_for_sj)
         vacancies_processed = len(middle_salaries)
         average_salary = int(sum(middle_salaries)/amount_vacancies)
         sj_statistics = {

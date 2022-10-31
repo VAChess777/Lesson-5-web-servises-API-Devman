@@ -57,12 +57,12 @@ The program consists of 1 script:
 
 The `main.py` program contains the functions:
 
-* The `get_all_info_vacancies_hh` function - downloads salary data from the Headhunter server.
+* The `get_vacancies_hh` function - downloads salary data from the Headhunter server.
 * The `predict_salary` function - calculates the middle salary.
 * The `predict_rub_salary_hh` function - receives salary data for each vacancy from Headhunter and transmits this data to the a `predict_salary` function.
 * The `get_hh_statistic` function - gets statistics on vacancies and salaries from Headhunter. Calculates the average salary and vacancies processed.
 * The `get_all_language_stat_from_hh` function - gets statistics on vacancies and salaries from Headhunter for each of the languages of interest.
-* The `get_all_info_vacancies_sj` function - downloads salary data from the SuperJob server.
+* The `get_vacancies_sj` function - downloads salary data from the SuperJob server.
 * The `predict_rub_salary_sj` function - receives salary data for each vacancy from SuperJob and transmits this data to the a `predict_salary` function.
 * The `get_sj_statistic` function - gets statistics on vacancies and salaries from SuperJob. Calculates the average salary and vacancies processed.
 * The `get_all_language_stat_from_sj` function - gets statistics on vacancies and salaries from SuperJob for each of the languages of interest.
