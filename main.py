@@ -119,7 +119,8 @@ def get_sj_statistic(vacancies_sj):
     if vacancies_sj:
         amount_vacancies = len(vacancies_sj)
         middle_salaries = [
-            predict_rub_salary_sj(vacancy) for vacancy in vacancies_sj
+            predict_rub_salary_sj(vacancy)
+            for vacancy in vacancies_sj if vacancy['currency'] == 'rub'
         ]
         vacancies_processed = len(middle_salaries)
         average_salary = int(sum(middle_salaries)/amount_vacancies)
